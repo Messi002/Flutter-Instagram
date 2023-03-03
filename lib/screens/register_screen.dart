@@ -1,8 +1,6 @@
-import 'dart:html';
+import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram/resources/auth_method.dart';
@@ -26,14 +24,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late final TextEditingController bioController;
   late final TextEditingController usernameController;
   Uint8List? _image;
+  bool _isLoading = false;
+
+  void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String content = await AuthMethods().SignUpUser(
+      username: usernameController.text.trim(),
+      bio: bioController.text.trim(),
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+      file: _image!,
+    );
+
+      setState(() {
+      _isLoading = false;
+    });
+
+    if (content != 'success') {
+      // ignore: use_build_context_synchronously
+      showSnackBarMsg(context, content);
+    }
+
+  
+  }
 
   @override
   void initState() {
-    super.initState();
     emailController = TextEditingController();
     passwordController = TextEditingController();
     bioController = TextEditingController();
     usernameController = TextEditingController();
+    super.initState();
   }
 
   @override
@@ -77,18 +100,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
             // Avatar....
             Stack(
               children: [
-                _image != null ? CircleAvatar(
-                  radius: 64,
-                  backgroundImage: MemoryImage(_image!),
-                ) :const CircleAvatar(
-                  backgroundImage: AssetImage('assets/profile.jpg'),
-                  radius: 64,
-                ),
+                _image != null
+                    ? CircleAvatar(
+                        radius: 64,
+                        backgroundImage: MemoryImage(_image!),
+                      )
+                    : const CircleAvatar(
+                        backgroundImage: AssetImage('assets/profile.jpg'),
+                        radius: 64,
+                      ),
                 Positioned(
                   bottom: -10,
                   left: 80,
                   child: IconButton(
-                    onPressed: () => selectImage(),
+                    onPressed: selectImage,
                     icon: const Icon(Icons.add_a_photo),
                   ),
                 ),
@@ -128,15 +153,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               height: 64,
             ),
             InkWell(
-              onTap: () async {
-                await AuthMethods().SignUpUser(
-                  username: usernameController.text.trim(),
-                  bio: bioController.text.trim(),
-                  email: emailController.text.trim(),
-                  password: passwordController.text.trim(),
-                  file: _image!,
-                );
-              },
+              onTap: signUpUser,
               child: Container(
                 width: double.infinity,
                 alignment: Alignment.center,
@@ -145,7 +162,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     color: AppColors.blueColor,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(4)))),
-                child: const Text('Register'),
+                child: _isLoading ? const Center(child: CircularProgressIndicator.adaptive(
+                  backgroundColor: AppColors.primaryColor,
+                ),) : const Text('Register'),
               ),
             ),
             const SizedBox(

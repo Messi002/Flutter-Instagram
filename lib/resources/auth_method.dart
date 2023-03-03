@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram/resources/storage_method.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -22,28 +23,60 @@ class AuthMethods {
       if (username.isNotEmpty ||
           bio.isNotEmpty ||
           email.isNotEmpty ||
-          password.isNotEmpty
-           || file != null
-          ) {
+          password.isNotEmpty ||
+          file != null) {
         //register user to firebase_auth
         UserCredential userCred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
         String uid = userCred.user!.uid;
+
+//making sure that upload image works first
+
+        String photoUrl = await StorageMethods()
+            .uploadImageToStorage('profilePics', file, false);
+
         //add user to firebase(Database)
         _firestore.collection('users').doc(userCred.user!.uid).set({
           "username": username,
           "uid": uid,
           "email": email,
-          "bio" : bio,
+          "bio": bio,
+          "photoUrl": photoUrl,
           "followers": [],
           "following": [],
         });
 
         res = 'Success';
       }
+    } on FirebaseAuthException catch (err) {
+      if (err.code == 'invalid-email') {
+        res = 'The email is badly formatted';
+      }
     } catch (e) {
       res = e.toString();
     }
+    return res;
+  }
+
+  //loggin user
+  Future<String> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    String res = 'Some error occured';
+
+    try {
+      if (email.isNotEmpty || password.isNotEmpty) {
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        res = 'Success';
+      } else {
+        res = 'Please enter all the fields';
+      }
+    } catch (e) {
+      res = e.toString();
+    }
+
     return res;
   }
 }
