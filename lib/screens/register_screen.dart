@@ -1,28 +1,59 @@
 import 'dart:html';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:instagram/resources/auth_method.dart';
 import 'package:instagram/utils/colors.dart';
+import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_field_input.dart';
 
-// class LoginScreen extends StatefulWidget {
-//   const LoginScreen({super.key});
-
-//   @override
-//   State<LoginScreen> createState() => _LoginScreenState();
-// }
-
-// class _LoginScreenState extends State<LoginScreen> {
-class SignUpScreen extends HookWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
   @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+// class SignUpScreen extends HookWidget {
+//    SignUpScreen({super.key});
+
+  late final TextEditingController emailController;
+  late final TextEditingController passwordController;
+  late final TextEditingController bioController;
+  late final TextEditingController usernameController;
+  Uint8List? _image;
+
+  @override
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    bioController = TextEditingController();
+    usernameController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    bioController.dispose();
+    usernameController.dispose();
+    super.dispose();
+  }
+
+  void selectImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final emailController = useTextEditingController();
-    final passwordController = useTextEditingController();
-    final bioController = useTextEditingController();
-    final usernameController = useTextEditingController();
     return Scaffold(
       body: SafeArea(
           child: Container(
@@ -46,14 +77,21 @@ class SignUpScreen extends HookWidget {
             // Avatar....
             Stack(
               children: [
-               const CircleAvatar(
+                _image != null ? CircleAvatar(
                   radius: 64,
-
+                  backgroundImage: MemoryImage(_image!),
+                ) :const CircleAvatar(
+                  backgroundImage: AssetImage('assets/profile.jpg'),
+                  radius: 64,
                 ),
                 Positioned(
                   bottom: -10,
                   left: 80,
-                  child: IconButton(onPressed: (){}, icon: const Icon(Icons.add_a_photo),),),
+                  child: IconButton(
+                    onPressed: () => selectImage(),
+                    icon: const Icon(Icons.add_a_photo),
+                  ),
+                ),
               ],
             ),
             const SizedBox(
@@ -66,14 +104,14 @@ class SignUpScreen extends HookWidget {
             const SizedBox(
               height: 24,
             ),
-             TextInputField(
+            TextInputField(
                 textEditingController: bioController,
                 hinText: 'Enter your bio',
                 textInputType: TextInputType.text),
             const SizedBox(
               height: 24,
             ),
-             TextInputField(
+            TextInputField(
                 textEditingController: emailController,
                 hinText: 'Enter your email',
                 textInputType: TextInputType.emailAddress),
@@ -90,22 +128,30 @@ class SignUpScreen extends HookWidget {
               height: 64,
             ),
             InkWell(
+              onTap: () async {
+                await AuthMethods().SignUpUser(
+                  username: usernameController.text.trim(),
+                  bio: bioController.text.trim(),
+                  email: emailController.text.trim(),
+                  password: passwordController.text.trim(),
+                  file: _image!,
+                );
+              },
               child: Container(
                 width: double.infinity,
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: const ShapeDecoration(
-                color: AppColors.blueColor,
-                  
-                  shape: RoundedRectangleBorder(
-                  
-                  borderRadius: BorderRadius.all(Radius.circular(4))
-                )),
+                    color: AppColors.blueColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)))),
                 child: const Text('Register'),
               ),
             ),
-            const SizedBox(height: 12,),
-              Flexible(
+            const SizedBox(
+              height: 12,
+            ),
+            Flexible(
               flex: 2,
               child: Container(),
             ),
@@ -115,11 +161,15 @@ class SignUpScreen extends HookWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: const Text('Already an account?'),
-                ),  GestureDetector(
-                  onTap: (){},
+                ),
+                GestureDetector(
+                  onTap: () {},
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: const Text('Login up', style: TextStyle(fontWeight: FontWeight.bold),),
+                    child: const Text(
+                      'Login up',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                 )
               ],

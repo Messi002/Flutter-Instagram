@@ -22,8 +22,9 @@ class AuthMethods {
       if (username.isNotEmpty ||
           bio.isNotEmpty ||
           email.isNotEmpty ||
-          password.isNotEmpty ||
-          file != null) {
+          password.isNotEmpty
+           || file != null
+          ) {
         //register user to firebase_auth
         UserCredential userCred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
