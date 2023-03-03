@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram/resources/auth_method.dart';
+import 'package:instagram/screens/register_screen.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_field_input.dart';
@@ -21,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
 
   void loginUser() async {
-     setState(() {
+    setState(() {
       _isLoading = true;
     });
     String res = await AuthMethods().loginUser(
@@ -38,6 +39,12 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void navigateToSignUp() {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => const SignUpScreen(),
+    ));
   }
 
   @override
@@ -102,7 +109,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: AppColors.blueColor,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(4)))),
-                child: const Text('Log in'),
+                child: _isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator.adaptive(
+                          backgroundColor: AppColors.primaryColor,
+                        ),
+                      )
+                    : const Text('Log in'),
               ),
             ),
             const SizedBox(
@@ -120,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: const Text('Don\'t have an account?'),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: navigateToSignUp,
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: const Text(

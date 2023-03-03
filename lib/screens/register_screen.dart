@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram/resources/auth_method.dart';
+import 'package:instagram/responsive/mobile_screen_layout.dart';
+import 'package:instagram/responsive/responsive_layout_screen.dart';
+import 'package:instagram/responsive/web_screen_layout.dart';
+import 'package:instagram/screens/login_screen.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_field_input.dart';
@@ -38,16 +42,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
       file: _image!,
     );
 
-      setState(() {
+    setState(() {
       _isLoading = false;
     });
 
     if (content != 'success') {
       // ignore: use_build_context_synchronously
       showSnackBarMsg(context, content);
+    } else {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => const ResponsiveLayout(
+          mobileScreenLayout: MobileScreenLayout(),
+          webScreenLayout: WebScreenLayout(),
+        ),
+      ));
     }
+  }
 
-  
+  void navigateToLogin() {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => const LoginScreen(),
+    ));
   }
 
   @override
@@ -162,9 +177,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     color: AppColors.blueColor,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(4)))),
-                child: _isLoading ? const Center(child: CircularProgressIndicator.adaptive(
-                  backgroundColor: AppColors.primaryColor,
-                ),) : const Text('Register'),
+                child: _isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator.adaptive(
+                          backgroundColor: AppColors.primaryColor,
+                        ),
+                      )
+                    : const Text('Register'),
               ),
             ),
             const SizedBox(
@@ -182,7 +201,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: const Text('Already an account?'),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: navigateToLogin,
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: const Text(
