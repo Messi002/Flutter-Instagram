@@ -19,10 +19,10 @@ class SignUpScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _emailController = useTextEditingController();
-    final _passwordController = useTextEditingController();
-    final _bioController = useTextEditingController();
-    final _usernameController = useTextEditingController();
+    final emailController = useTextEditingController();
+    final passwordController = useTextEditingController();
+    final bioController = useTextEditingController();
+    final usernameController = useTextEditingController();
     return Scaffold(
       body: SafeArea(
           child: Container(
@@ -46,7 +46,7 @@ class SignUpScreen extends HookWidget {
             // Avatar....
             Stack(
               children: [
-                CircleAvatar(
+               const CircleAvatar(
                   radius: 64,
 
                 ),
@@ -60,28 +60,28 @@ class SignUpScreen extends HookWidget {
               height: 24,
             ),
             TextInputField(
-                textEditingController: _usernameController,
+                textEditingController: usernameController,
                 hinText: 'Enter your user',
                 textInputType: TextInputType.text),
             const SizedBox(
               height: 24,
             ),
              TextInputField(
-                textEditingController: _bioController,
+                textEditingController: bioController,
                 hinText: 'Enter your bio',
                 textInputType: TextInputType.text),
             const SizedBox(
               height: 24,
             ),
              TextInputField(
-                textEditingController: _emailController,
+                textEditingController: emailController,
                 hinText: 'Enter your email',
                 textInputType: TextInputType.emailAddress),
             const SizedBox(
               height: 24,
             ),
             TextInputField(
-              textEditingController: _passwordController,
+              textEditingController: passwordController,
               hinText: 'Enter your password',
               textInputType: TextInputType.text,
               isPassword: true,
