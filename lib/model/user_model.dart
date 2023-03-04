@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 class UserModel {
@@ -12,7 +13,6 @@ class UserModel {
   final List followers;
   final List following;
 
-  
   UserModel({
     required this.username,
     required this.uid,
@@ -24,18 +24,17 @@ class UserModel {
   });
 
   Map<String, dynamic> toJson() => {
+        'username': username,
+        'uid': uid,
+        'email': email,
+        'bio': bio,
+        'photoUrl': photoUrl,
+        'followers': followers,
+        'following': following,
+      };
 
-      'username': username,
-      'uid': uid,
-      'email': email,
-      'bio': bio,
-      'photoUrl': photoUrl,
-      'followers': followers,
-      'following': following,
-    };
-  
-
-  factory UserModel.fromMap(Map<String, dynamic> json) {
+  factory UserModel.fromJson(DocumentSnapshot snapshot) {
+    final json = snapshot.data()! as Map<String, dynamic>;
     return UserModel(
       username: json['username'] as String,
       uid: json['uid'] as String,
@@ -46,7 +45,6 @@ class UserModel {
       following: List.from(json['following'] as List),
     );
   }
-
 
   UserModel copyWith({
     String? username,
@@ -76,25 +74,24 @@ class UserModel {
   @override
   bool operator ==(covariant UserModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.username == username &&
-      other.uid == uid &&
-      other.email == email &&
-      other.bio == bio &&
-      other.photoUrl == photoUrl &&
-      listEquals(other.followers, followers) &&
-      listEquals(other.following, following);
+
+    return other.username == username &&
+        other.uid == uid &&
+        other.email == email &&
+        other.bio == bio &&
+        other.photoUrl == photoUrl &&
+        listEquals(other.followers, followers) &&
+        listEquals(other.following, following);
   }
 
   @override
   int get hashCode {
     return username.hashCode ^
-      uid.hashCode ^
-      email.hashCode ^
-      bio.hashCode ^
-      photoUrl.hashCode ^
-      followers.hashCode ^
-      following.hashCode;
+        uid.hashCode ^
+        email.hashCode ^
+        bio.hashCode ^
+        photoUrl.hashCode ^
+        followers.hashCode ^
+        following.hashCode;
   }
 }
