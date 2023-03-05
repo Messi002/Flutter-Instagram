@@ -39,7 +39,11 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
       body: PageView(
         controller: pageController,
         children:const [
-      
+          Text('1'),
+          Text('2'),
+          Text('3'),
+          Text('4'),
+          Text('5'),
         ],
         // onPageChanged: onPageChanged,
       ),
