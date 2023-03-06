@@ -21,7 +21,11 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     pageController.jumpToPage(page);
   }
 
-  
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController();
+  }
 
   @override
   void dispose() {

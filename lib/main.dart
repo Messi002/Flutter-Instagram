@@ -49,21 +49,7 @@ class MyApp extends StatelessWidget {
                     child: Text('${snapshot.error}'),
                   );
                 }
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator.adaptive(
-                      backgroundColor: AppColors.primaryColor),
-                );
-              }
-    
-              return const LoginScreen();
-            },
-          )),
-    );
-  }
-}
-
+         
 
 
 
