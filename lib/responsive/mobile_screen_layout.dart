@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram/model/user_model.dart';
 import 'package:instagram/providers/user_provider.dart';
 import 'package:instagram/utils/colors.dart';
+import 'package:instagram/utils/global_variables.dart';
 import 'package:provider/provider.dart';
 
 class MobileScreenLayout extends StatefulWidget {
@@ -14,11 +15,17 @@ class MobileScreenLayout extends StatefulWidget {
 }
 
 class _MobileScreenLayoutState extends State<MobileScreenLayout> {
-  final int _page = 0;
+   int _page = 0;
   late final PageController pageController;
 
   void navigationTapped(int page) {
     pageController.jumpToPage(page);
+  }
+
+  void onPageChanged(int page) {
+    setState(() {
+      _page = page;
+    });
   }
 
   @override
@@ -35,17 +42,13 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
 
   @override
   Widget build(BuildContext context) {
+    UserModel user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       body: PageView(
         controller: pageController,
-        children:const [
-          Text('1'),
-          Text('2'),
-          Text('3'),
-          Text('4'),
-          Text('5'),
-        ],
-        // onPageChanged: onPageChanged,
+        onPageChanged: onPageChanged,
+        physics: const NeverScrollableScrollPhysics(),
+        children: GlobalVariables.homeScreenItem,
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: AppColors.mobileBackgroundColor,

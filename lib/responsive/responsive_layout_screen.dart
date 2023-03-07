@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/providers/user_provider.dart';
-import 'package:instagram/utils/dimensions.dart';
+import 'package:instagram/utils/global_variables.dart';
 import 'package:provider/provider.dart';
 
 class ResponsiveLayout extends StatefulWidget {
@@ -16,6 +16,7 @@ class ResponsiveLayout extends StatefulWidget {
 }
 
 class _ResponsiveLayoutState extends State<ResponsiveLayout> {
+  //we can't add an asynchronous inside init state
   @override
   void initState() {
     super.initState();
@@ -26,14 +27,14 @@ class _ResponsiveLayoutState extends State<ResponsiveLayout> {
   addData() async {
     UserProvider _userProvider =
         Provider.of<UserProvider>(context, listen: false);
-      await _userProvider.refreshUser();
+    await _userProvider.refreshUser();
   }
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        if (constraints.maxWidth > Dimension.webScreenSize) {
+        if (constraints.maxWidth > GlobalVariables.webScreenSize) {
           // Web screen here
           return widget.webScreenLayout;
         }
