@@ -23,7 +23,20 @@ class _ResponsiveLayoutState extends State<ResponsiveLayout> {
   }
 
 //This is to call the provider to refresh user name when ever it changes
-  addDa
+  addData() async {
+    UserProvider _userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+      await _userProvider.refreshUser();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        if (constraints.maxWidth > Dimension.webScreenSize) {
+          // Web screen here
+          return widget.webScreenLayout;
+        }
         //Else mobile screen here
         return widget.mobileScreenLayout;
       },
