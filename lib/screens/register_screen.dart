@@ -97,7 +97,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       body: SafeArea(
           child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
+        padding: EdgeInsets.only(left: 32, right: 32, bottom: MediaQuery.of(context).viewInsets.bottom),
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -20,7 +20,7 @@ class _ResponsiveLayoutState extends State<ResponsiveLayout> {
   @override
   void initState() {
     super.initState();
-    addData();
+    // addData();
   }
 
 //This is to call the provider to refresh user name when ever it changes

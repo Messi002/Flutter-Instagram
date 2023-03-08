@@ -15,7 +15,7 @@ class MobileScreenLayout extends StatefulWidget {
 }
 
 class _MobileScreenLayoutState extends State<MobileScreenLayout> {
-   int _page = 0;
+  int _page = 0;
   late final PageController pageController;
 
   void navigationTapped(int page) {
@@ -42,7 +42,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
 
   @override
   Widget build(BuildContext context) {
-    UserModel user = Provider.of<UserProvider>(context).getUser;
+    // UserModel user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       body: PageView(
         controller: pageController,
@@ -52,37 +52,53 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: AppColors.mobileBackgroundColor,
+        type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-              icon: const Icon(Icons.home),
-              label: '',
-              backgroundColor: _page == 0
+            icon: Icon(
+              Icons.home,
+              color: _page == 0
                   ? AppColors.primaryColor
-                  : AppColors.secondaryColor),
+                  : AppColors.secondaryColor,
+            ),
+            label: '',
+          ),
           BottomNavigationBarItem(
-              icon: const Icon(Icons.search),
-              label: '',
-              backgroundColor: _page == 1
+            icon: Icon(
+              Icons.search,
+              color: _page == 1
                   ? AppColors.primaryColor
-                  : AppColors.secondaryColor),
+                  : AppColors.secondaryColor,
+            ),
+            label: '',
+          ),
           BottomNavigationBarItem(
-              icon: const Icon(Icons.add_circle),
-              label: '',
-              backgroundColor: _page == 2
+            icon: Icon(
+              Icons.add_circle,
+              color: _page == 2
                   ? AppColors.primaryColor
-                  : AppColors.secondaryColor),
+                  : AppColors.secondaryColor,
+            ),
+            label: '',
+          ),
           BottomNavigationBarItem(
-              icon: const Icon(Icons.favorite),
-              label: '',
-              backgroundColor: _page == 3
+            icon: Icon(
+              Icons.favorite,
+              color: _page == 3
                   ? AppColors.primaryColor
-                  : AppColors.secondaryColor),
+                  : AppColors.secondaryColor,
+            ),
+            label: '',
+          ),
           BottomNavigationBarItem(
-              icon: const Icon(Icons.person),
-              label: '',
-              backgroundColor: _page == 4
+            icon: Icon(
+              Icons.person,
+              color: _page == 4
                   ? AppColors.primaryColor
-                  : AppColors.secondaryColor),
+                  : AppColors.secondaryColor,
+            ),
+            label: '',
+          ),
         ],
         onTap: navigationTapped,
       ),
