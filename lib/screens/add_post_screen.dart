@@ -16,6 +16,19 @@ class AddPostScreen extends StatefulWidget {
 
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
+  late final TextEditingController _descriptionText;
+
+  @override
+  void initState() {
+    super.initState();
+    _descriptionText = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _descriptionText.dispose();
+    super.dispose();
+  }
 
   void _selectImage(BuildContext context) async {
     return showDialog(
@@ -70,7 +83,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    UserModel user = context.watch<UserProvider>().getUser;
+    UserProvider user = Provider.of<UserProvider>(context);
     return _file == null
         ? Center(
             child: IconButton(
@@ -106,7 +119,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CircleAvatar( // user.photoUrl
+                    const CircleAvatar(
+                      // user.photoUrl
                       backgroundImage: NetworkImage(
                         'https://images.unsplash.com/photo-1677761215878-1030a5840dd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
                       ),
@@ -129,7 +143,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         child: Container(
                           decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: MemoryImage(_file!),
+                            image: MemoryImage(_file!),
                             fit: BoxFit.fill,
                             alignment: FractionalOffset.topCenter,
                           )),

@@ -1,0 +1,87 @@
+struct BlkioRequest {
+    // Request details
+}
+
+struct BlkioCompletion {
+    // Completion details
+}
+
+impl BlkioRequest {
+    // Validate the request upon enqueueing
+    fn validate(&self) -> Result<(), String> {
+        // Check request alignment
+        if !self.is_aligned() {
+            return Err("Request is not properly aligned".to_string());
+        }
+
+        // Check read-only devices
+        if self.is_write() && self.is_read_only() {
+            return Err("Write requests are not allowed on read-only devices".to_string());
+        }
+
+        Ok(())
+    }
+
+    // Check if the request is properly aligned
+    fn is_aligned(&self) -> bool {
+        // Implementation here
+        true
+    }
+
+    // Check if the request is a write request
+    fn is_write(&self) -> bool {
+        // Implementation here
+        true
+    }
+
+    // Check if the device is read-only
+    fn is_read_only(&self) -> bool {
+        // Implementation here
+        true
+    }
+}
+
+impl BlkioCompletion {
+    // Generate completion with error message
+    fn with_error(error_msg: String) -> BlkioCompletion {
+        BlkioCompletion { error_msg }
+    }
+}
+
+struct Blkioq {
+    // Implementation details
+}
+
+impl Blkioq {
+    fn enqueue(&mut self, request: BlkioRequest) {
+        match request.validate() {
+            Ok(_) => {
+                // Request is valid, pass it to the driver
+                self.driver.enqueue(request);
+            }
+            Err(error_msg) => {
+                // Request is invalid, generate completion with error message
+                let completion = BlkioCompletion::with_error(error_msg);
+                self.complete(completion);
+            }
+        }
+    }
+
+    fn complete(&mut self, completion: BlkioCompletion) {
+        // Implementation details
+    }
+
+    fn driver(&mut self) -> &mut BlkioDriver {
+        // Implementation details
+    }
+}
+
+struct BlkioDriver {
+    // Implementation details
+}
+
+impl BlkioDriver {
+    fn enqueue(&mut self, request: BlkioRequest) {
+        // Implementation details
+    }
+}
