@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram/model/user_model.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/utils/utils.dart';
 
@@ -21,6 +24,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
         return SimpleDialog(
           title: const Text('Create a Post'),
           children: [
+            const Divider(
+              color: AppColors.primaryColor,
+            ),
             SimpleDialogOption(
               padding: const EdgeInsets.all(20),
               child: const Text('Take a Photo'),
@@ -32,7 +38,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 });
               },
             ),
-                SimpleDialogOption(
+            const Divider(
+              color: AppColors.primaryColor,
+            ),
+            SimpleDialogOption(
               padding: const EdgeInsets.all(20),
               child: const Text('Choose from gallery'),
               onPressed: () async {
@@ -43,6 +52,16 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 });
               },
             ),
+            const Divider(
+              color: AppColors.primaryColor,
+            ),
+            SimpleDialogOption(
+              padding: const EdgeInsets.all(20),
+              child: const Text('Cancel'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+              },
+            ),
           ],
         );
       },
@@ -51,71 +70,80 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // return Center(
-    //   child: IconButton(onPressed: (){}, icon: const Icon(Icons.upload)),
-    // );
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.mobileBackgroundColor,
-        leading:
-            IconButton(onPressed: () {}, icon: const Icon(Icons.arrow_back)),
-        title: const Text('Post to'),
-        centerTitle: true,
-        actions: [
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              'Post',
-              style: TextStyle(
-                  color: Colors.blueAccent,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16),
+    UserModel user = context.watch<UserProvider>().getUser;
+    return _file == null
+        ? Center(
+            child: IconButton(
+                onPressed: () => _selectImage(context),
+                icon: const Icon(
+                  Icons.upload,
+                  size: 35,
+                )),
+          )
+        : Scaffold(
+            appBar: AppBar(
+              backgroundColor: AppColors.mobileBackgroundColor,
+              leading: IconButton(
+                  onPressed: () {}, icon: const Icon(Icons.arrow_back)),
+              title: const Text('Post to'),
+              centerTitle: true,
+              actions: [
+                TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    'Post',
+                    style: TextStyle(
+                        color: Colors.blueAccent,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
+                )
+              ],
             ),
-          )
-        ],
-      ),
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const CircleAvatar(
-                backgroundImage: NetworkImage(
-                    'https://images.unsplash.com/photo-1677761215878-1030a5840dd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+            body: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const CircleAvatar( // user.photoUrl
+                      backgroundImage: NetworkImage(
+                        'https://images.unsplash.com/photo-1677761215878-1030a5840dd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+                      ),
                     ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.45,
-                child: const TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Write a caption...',
-                    border: InputBorder.none,
-                  ),
-                  maxLines: 8,
-                ),
-              ),
-              SizedBox(
-                height: 45,
-                width: 45,
-                child: AspectRatio(
-                  aspectRatio: 487 / 451,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                      image: NetworkImage(
-                          'https://images.unsplash.com/photo-1677761215878-1030a5840dd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80'),
-                      fit: BoxFit.fill,
-                      alignment: FractionalOffset.topCenter,
-                    )),
-                  ),
-                ),
-              ),
-              const Divider(),
-            ],
-          )
-        ],
-      ),
-    );
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: const TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Write a caption...',
+                          border: InputBorder.none,
+                        ),
+                        maxLines: 8,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 45,
+                      width: 45,
+                      child: AspectRatio(
+                        aspectRatio: 487 / 451,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: MemoryImage(_file!),
+                            fit: BoxFit.fill,
+                            alignment: FractionalOffset.topCenter,
+                          )),
+                        ),
+                      ),
+                    ),
+                    const Divider(),
+                  ],
+                )
+              ],
+            ),
+          );
   }
 }
+
+
+// 3: 18 : 19

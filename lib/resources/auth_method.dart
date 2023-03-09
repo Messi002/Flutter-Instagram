@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -66,8 +68,10 @@ class AuthMethods {
       if (err.code == 'invalid-email') {
         res = 'The email is badly formatted';
       }
+      log(err.toString());
     } catch (e) {
       res = e.toString();
+      log(e.toString());
     }
     return res;
   }
