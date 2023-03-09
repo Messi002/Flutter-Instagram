@@ -30,6 +30,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
     super.dispose();
   }
 
+  void postImage(){
+
+  }
+
   void _selectImage(BuildContext context) async {
     return showDialog(
       context: context,
@@ -97,7 +101,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
             appBar: AppBar(
               backgroundColor: AppColors.mobileBackgroundColor,
               leading: IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.arrow_back)),
+                  onPressed: postImage, 
+                  icon: const Icon(Icons.arrow_back),),
               title: const Text('Post to'),
               centerTitle: true,
               actions: [
