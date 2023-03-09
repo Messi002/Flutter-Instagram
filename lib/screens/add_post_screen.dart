@@ -107,17 +107,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               centerTitle: true,
               actions: [
                 TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Post',
-                    style: TextStyle(
-                        color: Colors.blueAccent,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  ),
-                )
-              ],
-            ),
+                  
             body: Column(
               children: [
                 Row(
