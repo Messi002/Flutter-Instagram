@@ -20,11 +20,11 @@ class _ResponsiveLayoutState extends State<ResponsiveLayout> {
   @override
   void initState() {
     super.initState();
-    // addData();
+    addData();
   }
 
 //This is to call the provider to refresh user name when ever it changes
-  addData() async {
+   addData() async {
     UserProvider _userProvider =
         Provider.of<UserProvider>(context, listen: false);
     await _userProvider.refreshUser();

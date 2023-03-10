@@ -116,7 +116,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
     );
   }
 
-  String Id = FirestoreMethods().userId;
 
   void clearImage() {
     setState(() {
@@ -124,11 +123,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
     });
   }
 
-  String takeHere =
-      'https://images.unsplash.com/photo-1677761215878-1030a5840dd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80';
+  
   @override
   Widget build(BuildContext context) {
-    // UserProvider userProd = Provider.of<UserProvider>(context);
+    UserModel userProd = Provider.of<UserProvider>(context).getUser;
     return _file == null
         ? Center(
             child: IconButton(
@@ -149,7 +147,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               centerTitle: true,
               actions: [
                 TextButton(
-                  onPressed: () => postImage(Id, 'John', takeHere),
+                  onPressed: () => postImage(userProd.uid, userProd.username, userProd.photoUrl),
                   child: const Text(
                     'Post',
                     style: TextStyle(
@@ -170,11 +168,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CircleAvatar(
+                     CircleAvatar(
                       // user.photoUrl
-                      backgroundImage: NetworkImage(
-                        'https://images.unsplash.com/photo-1677761215878-1030a5840dd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-                      ),
+                      backgroundImage: NetworkImage(userProd.photoUrl),
+                      // backgroundImage: NetworkImage(
+                      //   'https://images.unsplash.com/photo-1677761215878-1030a5840dd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+                      // ),
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.45,

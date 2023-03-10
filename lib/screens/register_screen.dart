@@ -46,10 +46,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = false;
     });
 
-    if (content != 'success') {
+    if (content == 'success') {
       // ignore: use_build_context_synchronously
       showSnackBarMsg(context, content);
-    } else {
+
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const ResponsiveLayout(
@@ -58,6 +58,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
       );
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+      // show the error
+      showSnackBarMsg(context, content);
     }
   }
 
@@ -97,7 +103,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       body: SafeArea(
           child: Container(
-        padding: EdgeInsets.only(left: 32, right: 32, bottom: MediaQuery.of(context).viewInsets.bottom),
+        padding: EdgeInsets.only(
+            left: 32,
+            right: 32,
+            bottom: MediaQuery.of(context).viewInsets.bottom),
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
