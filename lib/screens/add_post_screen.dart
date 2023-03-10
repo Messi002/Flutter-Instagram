@@ -30,8 +30,16 @@ class _AddPostScreenState extends State<AddPostScreen> {
     super.dispose();
   }
 
-  void postImage(){
-
+  void postImage(
+    String uid,
+    String username,
+    String profileImage,
+  ) async{
+    try {
+      object 
+    } catch (e) {
+      print(e); 
+    }
   }
 
   void _selectImage(BuildContext context) async {
@@ -132,8 +140,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.45,
-                      child: const TextField(
-                        decoration: InputDecoration(
+                      child: TextField(
+                        controller: _descriptionText,
+                        decoration: const InputDecoration(
                           hintText: 'Write a caption...',
                           border: InputBorder.none,
                         ),
