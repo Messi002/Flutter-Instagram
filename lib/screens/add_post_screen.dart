@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/providers/user_provider.dart';
+import 'package:instagram/resources/firestore_methods.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram/model/user_model.dart';
@@ -16,17 +19,18 @@ class AddPostScreen extends StatefulWidget {
 
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
-  late final TextEditingController _descriptionText;
+  late final TextEditingController _description;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _descriptionText = TextEditingController();
+    _description = TextEditingController();
   }
 
   @override
   void dispose() {
-    _descriptionText.dispose();
+    _description.dispose();
     super.dispose();
   }
 
@@ -34,11 +38,30 @@ class _AddPostScreenState extends State<AddPostScreen> {
     String uid,
     String username,
     String profileImage,
-  ) async{
+  ) async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
-      object 
+      String res = await FirestoreMethods().uploadPost(
+          _description.text.trim(), uid, _file!, username, profileImage);
+
+      if (res == 'Succesful Upload.') {
+        setState(() {
+          _isLoading = true;
+        });
+        showSnackBarMsg(context, 'Posted!');
+        clearImage();
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+        showSnackBarMsg(context, res);
+        clearImage();
+      }
     } catch (e) {
-      print(e); 
+      log(e.toString());
+      clearImage();
     }
   }
 
@@ -93,9 +116,19 @@ class _AddPostScreenState extends State<AddPostScreen> {
     );
   }
 
+  String Id = FirestoreMethods().userId;
+
+  void clearImage() {
+    setState(() {
+      _file = null;
+    });
+  }
+
+  String takeHere =
+      'https://images.unsplash.com/photo-1677761215878-1030a5840dd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80';
   @override
   Widget build(BuildContext context) {
-    UserProvider user = Provider.of<UserProvider>(context);
+    // UserProvider userProd = Provider.of<UserProvider>(context);
     return _file == null
         ? Center(
             child: IconButton(
@@ -109,13 +142,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
             appBar: AppBar(
               backgroundColor: AppColors.mobileBackgroundColor,
               leading: IconButton(
-                  onPressed: postImage, 
-                  icon: const Icon(Icons.arrow_back),),
+                onPressed: clearImage,
+                icon: const Icon(Icons.arrow_back),
+              ),
               title: const Text('Post to'),
               centerTitle: true,
               actions: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () => postImage(Id, 'John', takeHere),
                   child: const Text(
                     'Post',
                     style: TextStyle(
@@ -128,6 +162,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
             body: Column(
               children: [
+                _isLoading
+                    ? const LinearProgressIndicator()
+                    : const Padding(padding: EdgeInsets.only(top: 0)),
+                const Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,7 +179,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: TextField(
-                        controller: _descriptionText,
+                        controller: _description,
                         decoration: const InputDecoration(
                           hintText: 'Write a caption...',
                           border: InputBorder.none,

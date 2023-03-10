@@ -24,7 +24,7 @@ class PostModel {
     required this.likes,
   });
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'description': description,
       'uid': uid,
