@@ -76,13 +76,14 @@ class PostCard extends StatelessWidget {
                 ),
               ),
               Expanded(
-                  child: Align(
-                alignment: Alignment.bottomRight,
-                child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.bookmark_border),
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.bookmark_border),
+                  ),
                 ),
-              ))
+              )
             ],
           ),
           //DESCRIPTION AND NUMBER OF COMMENTS SECTION
@@ -108,17 +109,40 @@ class PostCard extends StatelessWidget {
                   // ignore: prefer_const_constructors
                   child: RichText(
                     text: TextSpan(
-                        style: const TextStyle(color: AppColors.primaryColor),
-                        // ignore: prefer_const_literals_to_create_immutables
-                        children: [
-                          // ignore: prefer_const_constructors
-                          TextSpan(
-                              text: 'username',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold)),
-                        ]),
+                      style: const TextStyle(color: AppColors.primaryColor),
+                      // ignore: prefer_const_literals_to_create_immutables
+                      children: [
+                        // ignore: prefer_const_constructors
+                        TextSpan(
+                            text: 'username',
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(
+                          text: ' Some description text here...',
+                        ),
+                      ],
+                    ),
                   ),
-                )
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      'View all 200 comments',
+                      style: TextStyle(
+                          fontSize: 16, color: AppColors.secondaryColor),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(
+                    '14/02/2023',
+                    style: TextStyle(
+                        fontSize: 16, color: AppColors.secondaryColor),
+                  ),
+                ),
               ],
             ),
           ),
