@@ -35,7 +35,17 @@ class _LikeAnimationState extends State<LikeAnimation>
     scale = Tween<double>(begin: 1, end: 1.2).animate(_controller);
   }
 
- 
+  @override
+  void didUpdateWidget(covariant LikeAnimation oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isAnimating != oldWidget.isAnimating) {
+      startAnimation();
+    }
+  }
+
+  startAnimation() async{
+    
+  }
 
   // @override
   // void dispose() {
