@@ -101,6 +101,23 @@ class PostCard extends StatelessWidget {
                     '1, 234 likes',
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.only(top: 8),
+                  // ignore: prefer_const_constructors
+                  child: RichText(
+                    text: TextSpan(
+                        style: const TextStyle(color: AppColors.primaryColor),
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: [
+                          // ignore: prefer_const_constructors
+                          TextSpan(
+                              text: 'username',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
+                        ]),
+                  ),
                 )
               ],
             ),
