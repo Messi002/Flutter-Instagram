@@ -84,36 +84,54 @@ class PostCard extends StatelessWidget {
                 ),
               ))
             ],
-          )
+          ),
+          //DESCRIPTION AND NUMBER OF COMMENTS SECTION
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DefaultTextStyle(
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2!
+                      .copyWith(fontWeight: FontWeight.w800),
+                  child: Text(
+                    '1, 234 likes',
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
-
-
 //Here we are still within the stateless class....
   Future<dynamic> feedDiaglog(BuildContext context) {
     return showDialog(
-                        context: context,
-                        builder: (context) => Dialog(
-                          child: ListView(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shrinkWrap: true,
-                            children: ['Delete']
-                                .map(
-                                  (e) => InkWell(
-                                    onTap: () {},
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 12, horizontal: 16),
-                                      child: Text(e),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        ),
-                      );
+      context: context,
+      builder: (context) => Dialog(
+        child: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shrinkWrap: true,
+          children: ['Delete']
+              .map(
+                (e) => InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 16),
+                    child: Text(e),
+                  ),
+                ),
+              )
+              .toList(),
+        ),
+      ),
+    );
   }
 }
