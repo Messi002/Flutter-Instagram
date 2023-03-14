@@ -43,18 +43,29 @@ class _LikeAnimationState extends State<LikeAnimation>
     }
   }
 
-  startAnimation() async{
-    
+  startAnimation() async {
+    if (widget.isAnimating || widget.smallLike) {
+      await _controller.forward();
+      await _controller.reverse();
+      await Future.delayed(const Duration(milliseconds: 200));
+
+      if (widget.onEnd != null) {
+        widget.onEnd!();
+      }
+    }
   }
 
-  // @override
-  // void dispose() {
-  //   _controller.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return ScaleTransition(
+      scale: scale,
+      child: widget.child,
+    );
   }
 }
