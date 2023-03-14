@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/model/user_model.dart';
 import 'package:instagram/providers/user_provider.dart';
+import 'package:instagram/resources/firestore_methods.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
@@ -15,7 +16,7 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
-   bool isLikeAnimating = false;
+  bool isLikeAnimating = false;
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +59,19 @@ class _PostCardState extends State<PostCard> {
 
           //IMAGE SECTION
           GestureDetector(
-            onDoubleTap: (){
-              
+            onDoubleTap: () async {
+              await FirestoreMethods().likePost(
+              widget.snap['postId'],
+             _user.uid,
+              widget.snap['likes']
+
+              );
+              setState(() {
+                isLikeAnimating = true;
+              });
             },
             child: Stack(
+              alignment: Alignment.center,
               children: [
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.35,
@@ -71,21 +81,25 @@ class _PostCardState extends State<PostCard> {
                     fit: BoxFit.cover,
                   ),
                 ),
-          
+
                 //heart animation section
-                LikeAnimation(
-                  isAnimating: isLikeAnimating,
-                  child: const Icon(
-                    Icons.favorite,
-                    color: Colors.white,
-                    size: 100,
+                AnimatedOpacity(
+                  opacity: isLikeAnimating ? 1 : 0,
+                  duration: const Duration(milliseconds: 200),
+                  child: LikeAnimation(
+                    isAnimating: isLikeAnimating,
+                    duration: const Duration(milliseconds: 400),
+                    onEnd: () {
+                      setState(() {
+                        isLikeAnimating = false;
+                      });
+                    },
+                    child: const Icon(
+                      Icons.favorite,
+                      color: Colors.white,
+                      size: 100,
+                    ),
                   ),
-                  duration: const Duration(milliseconds: 400),
-                  onEnd: () {
-                    setState(() {
-                      isLikeAnimating = true;
-                    });
-                  },
                 )
               ],
             ),
@@ -98,10 +112,15 @@ class _PostCardState extends State<PostCard> {
                 isAnimating: widget.snap['likes'].contains(_user.uid),
                 smallLike: true,
                 child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
+                  onPressed: () async{
+
+                  },
+                  icon:  widget.snap['likes'].contains(_user.uid) ? const Icon(
                     Icons.favorite,
                     color: Colors.red,
+                  ) : const Icon(
+                    Icons.favorite_border,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -199,17 +218,7 @@ class _PostCardState extends State<PostCard> {
     return showDialog(
       context: context,
       builder: (context) => Dialog(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shrinkWrap: true,
-          children: ['Delete']
-              .map(
-                (e) => InkWell(
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 16),
-                    child: Text(e),
+        child: L
                   ),
                 ),
               )
@@ -219,3 +228,6 @@ class _PostCardState extends State<PostCard> {
     );
   }
 }
+
+
+//4 : 45 : 07
