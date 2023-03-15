@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram/model/user_model.dart';
 import 'package:instagram/providers/user_provider.dart';
 import 'package:instagram/resources/firestore_methods.dart';
+import 'package:instagram/screens/comment_screen.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
@@ -61,11 +62,7 @@ class _PostCardState extends State<PostCard> {
           GestureDetector(
             onDoubleTap: () async {
               await FirestoreMethods().likePost(
-              widget.snap['postId'],
-             _user.uid,
-              widget.snap['likes']
-
-              );
+                  widget.snap['postId'], _user.uid, widget.snap['likes']);
               setState(() {
                 isLikeAnimating = true;
               });
@@ -112,20 +109,30 @@ class _PostCardState extends State<PostCard> {
                 isAnimating: widget.snap['likes'].contains(_user.uid),
                 smallLike: true,
                 child: IconButton(
-                  onPressed: () async{
-
+                  onPressed: () async {
+                    await FirestoreMethods().likePost(
+                        widget.snap['postId'], _user.uid, widget.snap['likes']);
+                    setState(() {
+                      isLikeAnimating = true;
+                    });
                   },
-                  icon:  widget.snap['likes'].contains(_user.uid) ? const Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  ) : const Icon(
-                    Icons.favorite_border,
-                    color: Colors.white,
-                  ),
+                  icon: widget.snap['likes'].contains(_user.uid)
+                      ? const Icon(
+                          Icons.favorite,
+                          color: Colors.red,
+                        )
+                      : const Icon(
+                          Icons.favorite_border,
+                          color: Colors.white,
+                        ),
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const CommentScreen(),
+                  ));
+                },
                 icon: const Icon(
                   Icons.comment_outlined,
                 ),
@@ -238,6 +245,3 @@ class _PostCardState extends State<PostCard> {
     );
   }
 }
-
-
-//4 : 45 : 07
