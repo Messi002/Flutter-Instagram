@@ -35,17 +35,7 @@ class _CommentScreenState extends State<CommentScreen> {
               CircleAvatar(
                 backgroundImage: NetworkImage(_user.photoUrl),
                 radius: 18,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 8),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Comment as ${_user.username}',
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
+             
               ),
               InkWell(
                 onTap: () {},
