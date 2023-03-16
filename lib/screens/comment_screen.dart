@@ -49,13 +49,7 @@ class _CommentScreenState extends State<CommentScreen> {
               ),
               InkWell(
                 onTap: () {},
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                  child: const Text(
-                    'Post',
-                    style: TextStyle(color: Colors.blueAccent),
-                  ),
+               
                 ),
               ),
             ],
