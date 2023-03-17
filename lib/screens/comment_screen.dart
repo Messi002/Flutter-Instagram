@@ -17,7 +17,19 @@ class _CommentScreenState extends State<CommentScreen> {
   Widget build(BuildContext context) {
     final UserModel _user = Provider.of<UserProvider>(context).getUser;
 
-    
+    return Scaffold(
+      backgroundColor: AppColors.mobileBackgroundColor,
+      appBar: AppBar(
+        title: const Text('Comment Screen'),
+      ),
+      body: CommentCard(),
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          height: kToolbarHeight,
+          margin:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          padding: const EdgeInsets.only(left: 16, right: 8),
+          child: Row(
             // ignore: prefer_const_literals_to_create_immutables
             children: [
               CircleAvatar(
