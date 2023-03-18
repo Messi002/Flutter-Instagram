@@ -36,18 +36,7 @@ class _CommentCardState extends State<CommentCard> {
                         TextSpan(
                           text: 'some description to be added here',
                         ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Text(
-                      '21/23/2002',
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                ],
+            
               ),
             ),
           ),
