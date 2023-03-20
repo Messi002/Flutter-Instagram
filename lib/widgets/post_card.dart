@@ -44,7 +44,18 @@ class _PostCardState extends State<PostCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-           
+                          widget.snap['username'],
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                IconButton(
+                    onPressed: () => feedDiaglog(context),
+                    icon: const Icon(Icons.more_vert))
+              ],
+            ),
           ),
 
           //IMAGE SECTION
