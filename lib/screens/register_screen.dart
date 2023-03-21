@@ -20,19 +20,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-// class SignUpScreen extends HookWidget {
-//    SignUpScreen({super.key});
-
-  late final TextEditingController emailController;
-  late final TextEditingController passwordController;
-  late final TextEditingController bioController;
-  late final TextEditingController usernameController;
-  Uint8List? _image;
-  bool _isLoading = false;
-
-  void signUpUser() async {
-    setState(() {
-      _isLoading = true;
+// 
     });
     String content = await AuthMethods().signUpUser(
       username: usernameController.text.trim(),
