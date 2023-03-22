@@ -79,7 +79,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
     passwordController = TextEditingController();
     bioController = TextEditingController();
     usernameController = TextEditingController();
-    
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    bioController.dispose();
+    usernameController.dispose();
+    super.dispose();
+  }
+
+  void selectImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
