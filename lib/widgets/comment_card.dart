@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CommentCard extends StatefulWidget {
-  const CommentCard({super.key});
+  final snap;
+  const CommentCard({super.key, required this.snap});
 
   @override
   State<CommentCard> createState() => _CommentCardState();
@@ -16,7 +18,8 @@ class _CommentCardState extends State<CommentCard> {
         children: [
           CircleAvatar(
             backgroundImage: NetworkImage(
-                'https://images.unsplash.com/photo-1678811118543-14d19cb00508?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=388&q=80'),
+              widget.snap['profilePic']
+                ),
             radius: 18,
           ),
           Expanded(
@@ -30,11 +33,11 @@ class _CommentCardState extends State<CommentCard> {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: 'username',
+                          text: widget.snap['name'],
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         TextSpan(
-                          text: 'some description to be added here',
+                          text: ' ${widget.snap['text']}',
                         ),
                       ],
                     ),
@@ -42,9 +45,11 @@ class _CommentCardState extends State<CommentCard> {
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: Text(
-                      '21/23/2002',
+                      DateFormat.yMMMd().format(
+                        widget.snap['datePublished'].toDate()
+                      ),
                       style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                          const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                     ),
                   ),
                 ],
@@ -63,3 +68,6 @@ class _CommentCardState extends State<CommentCard> {
     );
   }
 }
+
+
+//5 : 22 : 00
