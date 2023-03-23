@@ -57,16 +57,48 @@ class FirestoreMethods {
   ) async {
     try {
       if (likes.contains(uid)) {
-      await  _firestore.collection('posts').doc(postId).update({
-          'likes' : FieldValue.arrayRemove([uid])
+        await _firestore.collection('posts').doc(postId).update({
+          'likes': FieldValue.arrayRemove([uid])
         });
-      }else {
-       await _firestore.collection('posts').doc(postId).update({
-          'likes' : FieldValue.arrayUnion([uid])
+      } else {
+        await _firestore.collection('posts').doc(postId).update({
+          'likes': FieldValue.arrayUnion([uid])
         });
       }
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  Future<String> postComment(
+    String postId,
+    String text,
+    String name,
+    String uid,
+    String profilePic,
+  ) async {
+    try {
+      if (text.isNotEmpty) {
+        String commentId = const Uuid().v1();
+        _firestore
+            .collection('posts')
+            .doc(postId)
+            .collection('comments')
+            .doc(commentId)
+            .set({
+          'profilePic': profilePic,
+          'name': name,
+          'uid': uid,
+          'text': text,
+          'commentId': commentId,
+          'datePublished': DateTime.now(),
+        });
+      } else {
+        debugPrint('text is empty');
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return '';
   }
 }
