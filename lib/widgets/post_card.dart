@@ -30,17 +30,27 @@ class _PostCardState extends State<PostCard> {
           .doc(widget.snap['postId'])
           .collection('comments')
           .get();
+
+          if (mounted) {
+            setState(() {
       cmtLength = snap.docs.length;
+              
+            });
+          }
     } catch (e) {
       log(e.toString());
     }
-    setState(() {});
   }
 
   @override
   void initState() {
     getComments();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
