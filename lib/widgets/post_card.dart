@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram/model/user_model.dart';
 import 'package:instagram/providers/user_provider.dart';
@@ -18,10 +21,33 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
+  int cmtLength = 0;
+
+  void getComments() async {
+    try {
+      var snap = await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(widget.snap['postId'])
+          .collection('comments')
+          .get();
+      cmtLength = snap.docs.length;
+    } catch (e) {
+      log(e.toString());
+    }
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    getComments();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final UserModel _user = Provider.of<UserProvider>(context).getUser;
+    getComments();
+
     return Container(
       color: AppColors.mobileBackgroundColor,
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -166,11 +192,11 @@ class _PostCardState extends State<PostCard> {
                 DefaultTextStyle(
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle2!
+                      .titleSmall!
                       .copyWith(fontWeight: FontWeight.w800),
                   child: Text(
                     '${widget.snap['likes'].length} likes',
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
                 Container(
@@ -199,7 +225,7 @@ class _PostCardState extends State<PostCard> {
                   child: Container(
                     padding: const EdgeInsets.only(top: 4),
                     child: Text(
-                      'View all 200 comments',
+                      'View all $cmtLength comments',
                       style: TextStyle(
                           fontSize: 16, color: AppColors.secondaryColor),
                     ),
@@ -233,7 +259,10 @@ class _PostCardState extends State<PostCard> {
           children: ['Delete']
               .map(
                 (e) => InkWell(
-                  onTap: () {},
+                  onTap: () async {
+                    FirestoreMethods().deletePost(widget.snap['postId']);
+                    Navigator.of(context).pop();
+                  },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                         vertical: 12, horizontal: 16),
