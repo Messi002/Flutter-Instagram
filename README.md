@@ -1,5 +1,5 @@
 # Flutter-Instagram
-This instagram app was built with flutter, firebase and using Provider as our State management
+Flutter, Firebase,Provider as our State management
 
 
 ## Features
