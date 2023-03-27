@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:instagram/screens/profile_screen.dart';
 
 import '../utils/colors.dart';
 
@@ -44,36 +46,69 @@ class _SearchScreenState extends State<SearchScreen> {
           },
         ),
       ),
-      body: isShowUsers? FutureBuilder(
-        future: FirebaseFirestore.instance
-            .collection('users')
-            .where('username', isEqualTo: _searchController.text.trim())
-            .get(),
-        builder: (context,
-            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
-          }
+      body: isShowUsers
+          ? FutureBuilder(
+              future: FirebaseFirestore.instance
+                  .collection('users')
+                  .where('username', isEqualTo: _searchController.text.trim())
+                  // .where('username', isGreaterThanOrEqualTo: _searchController.text.trim())
+                  .get(),
+              builder: (context,
+                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  );
+                }
 
-          return ListView.builder(
-            itemCount: snapshot.data!.docs.length,
-            itemBuilder: (context, index) {
-              final item = snapshot.data!.docs[index];
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(item['photoUrl']),
-                ),
-                title: Text(item['username']),
-              );
-            },
-          );
-        },
-      ) : const Text('Posts'),
+                return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    final item = snapshot.data!.docs[index];
+                    return InkWell(
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder:(context) => ProfileScreen(uid: item['uid']),)),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(item['photoUrl']),
+                        ),
+                        title: Text(item['username']),
+                      ),
+                    );
+                  },
+                );
+              },
+            )
+          : FutureBuilder(
+              future: FirebaseFirestore.instance.collection('posts').get(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                // return MasonryGridView.builder(
+                //   gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                //       crossAxisCount: 3),
+
+                //   itemCount: snapshot.data!.docs.length,
+                //   itemBuilder: (context, index) {
+                //     final item = snapshot.data!.docs[index];
+                //     return Image.network(item['postUrl']);
+                //   },
+                // );
+
+                return MasonryGridView.count(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    final item = snapshot.data!.docs[index];
+                    return Image.network(item['photoUrl']);
+                  },
+                );
+              },
+            ),
     );
   }
 }
-
-
-//5 : 39 : 01
