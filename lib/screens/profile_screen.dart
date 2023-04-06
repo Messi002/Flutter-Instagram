@@ -43,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       var postSnap = await FirebaseFirestore.instance
           .collection('posts')
-          .where(widget.uid, isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
           .get();
       followers = usersnap.data()!['followers'].length;
       following = usersnap.data()!['following'].length;
@@ -51,6 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           .data()!['followers']
           .contains(FirebaseAuth.instance.currentUser!.uid);
       postLength = postSnap.docs.length;
+      log('This is the post length: ${postSnap.docs.length}');
       setState(() {});
     } catch (e) {
       showSnackBarMsg(context, e.toString());

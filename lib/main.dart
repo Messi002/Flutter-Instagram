@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-       ChangeNotifierProvider(create: (_) => UserProvider(),),
-        
-        
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
+        ),
       ],
       child: MaterialApp(
           title: 'Instagram clone',
@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
                       backgroundColor: AppColors.primaryColor),
                 );
               }
-    
+
               return const LoginScreen();
             },
           )),
@@ -68,3 +68,26 @@ class MyApp extends StatelessWidget {
 
 
 //flutter run -d chrome --web-renderer html
+
+
+
+ // onTap: () {
+                  //   log('pressed');
+                  //   Navigator.of(context).push(
+                  //     PageRouteBuilder(
+                  //       opaque: false,
+                  //       pageBuilder: (BuildContext context, _, __) {
+                  //         return ProductCategorySeeAll();
+                  //       },
+                  //       transitionsBuilder: (_, Animation<double> animation,
+                  //           __, Widget child) {
+                  //         return FadeTransition(
+                  //           opacity: Tween<double>(begin: 0.0, end: 1.0)
+                  //               .animate(animation),
+                  //           child: child,
+                  //         );
+                  //       },
+                  //       transitionDuration: const Duration(milliseconds: 800),
+                  //     ),
+                  //   );
+                  // },
